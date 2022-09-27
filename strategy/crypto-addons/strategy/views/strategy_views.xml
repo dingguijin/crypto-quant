@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <record id="strategy_view_tree" model="ir.ui.view">
+    <field name="name"></field>
+    <field name="model">mfbot.strategy</field>
+    <field name="arch" type="xml">
+      <tree>
+        <field name="id" />
+        <field name="user_id" />
+        <field name="subaccount" />
+        <field name="exchange" />
+        <field name="market" />
+        <field name="invest" />
+        <field name="balance" />
+        <field name="pnl"/>
+        <field name="position" digits="[12,6]"/>
+        <field name="strategy"/>
+        
+        <field name="grid_gap" digits="[12,6]"/>
+        <field name="grid_size" digits="[12,6]"/>
+        <field name="start_date" />
+      </tree>
+    </field>
+  </record>
+
+  <record id="strategy_view_graph" model="ir.ui.view">
+    <field name="name"></field>
+    <field name="model">mfbot.strategy</field>
+    <field name="arch" type="xml">
+      <graph>
+      </graph>
+    </field>
+  </record>
+
+  <record id="strategy_view_pivot" model="ir.ui.view">
+    <field name="name"></field>
+    <field name="model">mfbot.strategy</field>
+    <field name="arch" type="xml">
+      <pivot>
+      </pivot>
+    </field>
+  </record>
+
+  <record id="strategy_view_calendar" model="ir.ui.view">
+    <field name="name"></field>
+    <field name="model">mfbot.strategy</field>
+    <field name="arch" type="xml">
+      <calendar>
+      </calendar>
+    </field>
+  </record>
+
+  <record id="strategy_view_form" model="ir.ui.view">
+    <field name="name"></field>
+    <field name="model">mfbot.strategy</field>
+    <field name="arch" type="xml">
+      <form>
+        <header>
+        </header>
+        <sheet>
+          <field name="able_to_modify" invisible="1">
+          </field>
+
+          <div class="oe_title">
+            <h1><field name="id"/></h1>
+          </div>
+          <group>
+            <group>
+              <field name="exchange"/>
+              <field name="market"/>
+              <field name="strategy"/>
+              <field name="user_id"/>
+              <field name="sale_id" />
+              <field name="subaccount" />
+              <field name="start_date" />
+            </group>
+            <group>
+              <field name="grid_size" digits="[12,6]" attrs="{'invisible':[('strategy','!=','GRID')]}" />
+              <field name="grid_gap" digits="[12,6]" attrs="{'invisible':[('strategy','!=','GRID')]}" />
+              <field name="invest"/>
+              <field name="balance"/>
+              <field name="pnl"/>
+              <field name="position" digits="[12,6]"/>
+            </group>
+          </group>
+
+          <notebook>
+            <page string="成交记录">
+              <field name="fill_lines">
+                <tree create="false" delete="false">
+                  
+                  <field name="date"/>
+                  <field name="market" />
+                  <field name="side" />
+                  <field name="size" digits="[12,6]"/>
+                  <field name="price" />
+                  <field name="balance" />
+                  <field name="position" digits="[12,6]"/>
+                  <field name="break_even_price" />
+                  <field name="liquidation_price" />
+                  <field name="strategy_id" />
+                  <field name="strategy" />
+
+                  <!--
+                  <field name="long_short" />
+                  <field name="position_action" />
+                  <field name="open_reason" />
+                  <field name="close_reason" />
+                  -->
+
+                </tree>
+              </field>
+            </page>
+            <page string="盈利分成">
+              <group>
+                <group>
+
+                  <field name="customer_profit_ratio">
+                    <attribute name="attrs">
+                      {'readonly' : [('able_to_modify','=',False)]}
+                    </attribute>
+                  </field>
+                  
+                  <field name="sale_profit_ratio">
+                    <attribute name="attrs">
+                      {'readonly' : [('able_to_modify','=',False)]}
+                    </attribute>
+
+                  </field>
+
+                  <field name="platform_profit_ratio">
+                    <attribute name="attrs">
+                      {'readonly' : [('able_to_modify','=',False)]}
+                    </attribute>
+                  </field>
+                </group>
+
+                <group>
+                  <field name="customer_profit"/>
+                  <field name="sale_profit"/>
+                  <field name="platform_profit"/>
+                </group>
+              </group>
+            </page>
+
+            <page string="其它">
+              <field name="misc">
+                <attribute name="attrs">
+                  {'readonly' : [('able_to_modify','=',False)]}
+                </attribute>
+              </field>
+            </page>
+          </notebook>
+        </sheet>
+        <div class="oe_chatter">
+          <field name="message_follower_ids"/>
+          <field name="activity_ids"/>
+          <field name="message_ids" options="{'post_refresh': 'recipients'}"/>
+        </div>
+      </form>
+    </field>
+  </record>
+
+</odoo>

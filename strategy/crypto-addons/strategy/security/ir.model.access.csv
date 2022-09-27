@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_mfbot_kline_user,mfbot.kline.user,model_mfbot_kline,group_mfbot_user,1,1,1,1
+access_mfbot_strategy_user,mfbot.strategy.user,model_mfbot_strategy,group_mfbot_user,1,1,1,1
+access_mfbot_pnl_user,mfbot.pnl.user,model_mfbot_pnl,group_mfbot_user,1,1,1,1
+access_mfbot_fill_user,mfbot.fill.user,model_mfbot_fill,group_mfbot_user,1,1,1,1

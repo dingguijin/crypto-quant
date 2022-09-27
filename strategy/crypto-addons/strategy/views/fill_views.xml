@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <record id="fill_view_tree" model="ir.ui.view">
+    <field name="name"></field>
+    <field name="model">mfbot.fill</field>
+    <field name="arch" type="xml">
+      <tree>
+        <field name="date"/>
+        <field name="market" />
+        <field name="side" />
+        <field name="size" digits="[12,12]"/>
+        <field name="price" digits="[12,12]"/>
+
+        <field name="break_even_price" />
+        <field name="liquidation_price" />
+        <field name="balance" />
+        
+        <field name="strategy_id" />
+        <field name="strategy" />
+
+        <field name="user_id" />
+
+	<!--
+        <field name="long_short" />
+        <field name="position_action" />
+        <field name="open_reason" />
+        <field name="close_reason" />
+	-->
+        
+      </tree>
+    </field>
+  </record>
+
+  <record id="fill_view_graph" model="ir.ui.view">
+    <field name="name"></field>
+    <field name="model">mfbot.fill</field>
+    <field name="arch" type="xml">
+      <graph>
+      </graph>
+    </field>
+  </record>
+
+  <record id="fill_view_pivot" model="ir.ui.view">
+    <field name="name"></field>
+    <field name="model">mfbot.fill</field>
+    <field name="arch" type="xml">
+      <pivot>
+      </pivot>
+    </field>
+  </record>
+
+  <record id="fill_view_calendar" model="ir.ui.view">
+    <field name="name"></field>
+    <field name="model">mfbot.fill</field>
+    <field name="arch" type="xml">
+      <calendar>
+      </calendar>
+    </field>
+  </record>
+
+  <record id="fill_view_form" model="ir.ui.view">
+    <field name="name"></field>
+    <field name="model">mfbot.fill</field>
+    <field name="arch" type="xml">
+      <form>
+        <header>
+        </header>
+        <sheet>
+          <div class="oe_title">
+            <h1><field name="date"/></h1>
+          </div>
+          <group>
+            <group>
+              <field name="market"/>
+              <field name="strategy_id"/>
+              <field name="user_id"/>
+              <field name="balance" />
+
+              <field name="break_even_price" />
+              <field name="liquidation_price" />
+
+            </group>
+            <group>
+              
+              <field name="side"/>
+              <field name="size" digits="[12,12]"/>
+              <field name="price" digits="[12,12]"/>
+
+              <field name="long_short" />
+              <field name="position_action" />
+              <field name="open_reason" />
+              <field name="close_reason" />
+
+            </group>
+          </group>
+
+          <notebook>
+            <page>
+            </page>
+          </notebook>
+        </sheet>
+        <div class="oe_chatter">
+          <field name="message_follower_ids"/>
+          <field name="activity_ids"/>
+          <field name="message_ids" options="{'post_refresh': 'recipients'}"/>
+        </div>
+      </form>
+    </field>
+  </record>
+
+</odoo>

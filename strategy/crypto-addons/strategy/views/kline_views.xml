@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <record id="kline_view_tree" model="ir.ui.view">
+    <field name="name"></field>
+    <field name="model">mfbot.kline</field>
+    <field name="arch" type="xml">
+      <tree>
+        <field name="exchange"/>
+        <field name="market"/>
+        <field name="start_time"/>
+        <field name="open" digits="[12,12]"/>
+        <field name="high" digits="[12,12]"/>
+        <field name="low" digits="[12,12]"/>
+        <field name="close" digits="[12,12]"/>
+        <field name="volume" digits="[12,12]"/>        
+      </tree>
+    </field>
+  </record>
+
+  <record id="kline_view_graph" model="ir.ui.view">
+    <field name="name"></field>
+    <field name="model">mfbot.kline</field>
+    <field name="arch" type="xml">
+      <graph>
+        <field name="exchange"/>
+        <field name="market"/>
+        <field name="start_time"/>
+        <field name="open"/>
+        <field name="high"/>
+        <field name="low"/>
+        <field name="close"/>
+        <field name="volume"/>        
+      </graph>
+    </field>
+  </record>
+
+  <record id="kline_view_pivot" model="ir.ui.view">
+    <field name="name"></field>
+    <field name="model">mfbot.kline</field>
+    <field name="arch" type="xml">
+      <pivot>
+        <field name="exchange"/>
+        <field name="market"/>
+        <field name="start_time"/>
+        <field name="open"/>
+        <field name="high"/>
+        <field name="low"/>
+        <field name="close"/>
+        <field name="volume"/>        
+      </pivot>
+    </field>
+  </record>
+
+  <record id="kline_view_calendar" model="ir.ui.view">
+    <field name="name"></field>
+    <field name="model">mfbot.kline</field>
+    <field name="arch" type="xml">
+      <calendar>
+        <field name="exchange"/>
+        <field name="market"/>
+        <field name="start_time"/>
+        <field name="open"/>
+        <field name="high"/>
+        <field name="low"/>
+        <field name="close"/>
+        <field name="volume"/>        
+      </calendar>
+    </field>
+  </record>
+
+  <record id="kline_view_form" model="ir.ui.view">
+    <field name="name"></field>
+    <field name="model">mfbot.kline</field>
+    <field name="arch" type="xml">
+      <form>
+        <header>
+        </header>
+        <sheet>
+          <div class="oe_title">
+            <h1><field name="start_time"/></h1>
+          </div>
+          <group>
+            <group>
+              <field name="exchange"/>
+              <field name="market"/>
+            </group>
+            <group>
+              <field name="open"/>
+              <field name="high"/>
+              <field name="low"/>
+              <field name="close"/>
+              <field name="volume"/>
+            </group>
+          </group>
+
+          <notebook>
+            <page>
+            </page>
+          </notebook>
+        </sheet>
+        <div class="oe_chatter">
+          <field name="message_follower_ids"/>
+          <field name="activity_ids"/>
+          <field name="message_ids" options="{'post_refresh': 'recipients'}"/>
+        </div>
+      </form>
+    </field>
+  </record>
+
+</odoo>
