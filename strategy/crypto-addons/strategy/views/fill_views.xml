@@ -3,7 +3,7 @@
 
   <record id="fill_view_tree" model="ir.ui.view">
     <field name="name"></field>
-    <field name="model">mfbot.fill</field>
+    <field name="model">strategy.fill</field>
     <field name="arch" type="xml">
       <tree>
         <field name="date"/>
@@ -34,7 +34,7 @@
 
   <record id="fill_view_graph" model="ir.ui.view">
     <field name="name"></field>
-    <field name="model">mfbot.fill</field>
+    <field name="model">strategy.fill</field>
     <field name="arch" type="xml">
       <graph>
       </graph>
@@ -43,7 +43,7 @@
 
   <record id="fill_view_pivot" model="ir.ui.view">
     <field name="name"></field>
-    <field name="model">mfbot.fill</field>
+    <field name="model">strategy.fill</field>
     <field name="arch" type="xml">
       <pivot>
       </pivot>
@@ -52,7 +52,7 @@
 
   <record id="fill_view_calendar" model="ir.ui.view">
     <field name="name"></field>
-    <field name="model">mfbot.fill</field>
+    <field name="model">strategy.fill</field>
     <field name="arch" type="xml">
       <calendar>
       </calendar>
@@ -61,7 +61,7 @@
 
   <record id="fill_view_form" model="ir.ui.view">
     <field name="name"></field>
-    <field name="model">mfbot.fill</field>
+    <field name="model">strategy.fill</field>
     <field name="arch" type="xml">
       <form>
         <header>

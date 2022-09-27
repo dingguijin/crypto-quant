@@ -1,10 +1,15 @@
 # -*- coding: utf-8 -*-
-
+#
+# Copyright (C) 2022 ~
+# Guijin Ding, dingguijin@gmail.com
+#
+# All rights reserved
+#
 
 {
     'name': 'Strategy',
     'category': 'Cryptocurrency',
-    'summary': 'Crypto Quant strategy configuration',
+    'summary': 'Crypto Quant strategy',
     'version': '1.0',
     'description': """
         This module provides the multiple strategies for quantitative trading.

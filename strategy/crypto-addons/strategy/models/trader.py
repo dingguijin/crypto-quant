@@ -36,7 +36,7 @@ class Trader(models.Model):
 
     start_date = fields.Datetime('Start Time', track_visibility='onchange')
 
-    able_to_modify = fields.Boolean('Able to modify', compute='_compute_able_to_modify')
+    able_to_modify = fields.Boolean(string='Able to modify', compute='_compute_able_to_modify')
     
     @api.model
     def create(self, vals):
@@ -54,4 +54,4 @@ class Trader(models.Model):
 
     def _compute_able_to_modify(self):
         for record in self:
-            record.able_to_modify = self.env.user.has_group('trade.group_trade_manager')
+            record.able_to_modify = self.env.user.has_group('strategy.group_strategy_manager')

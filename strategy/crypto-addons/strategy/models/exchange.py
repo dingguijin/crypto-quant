@@ -24,3 +24,8 @@ class Exchange(models.Model):
     
     desc = fields.Char(string='Description')
 
+    able_to_modify = fields.Boolean(string='Able to modify', compute='_compute_able_to_modify')
+
+    def _compute_able_to_modify(self):
+        for record in self:
+            record.able_to_modify = self.env.user.has_group('strategy.group_strategy_manager')

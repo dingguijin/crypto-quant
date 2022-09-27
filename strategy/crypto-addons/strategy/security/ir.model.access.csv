@@ -1,5 +1,6 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_mfbot_kline_user,mfbot.kline.user,model_mfbot_kline,group_mfbot_user,1,1,1,1
-access_mfbot_strategy_user,mfbot.strategy.user,model_mfbot_strategy,group_mfbot_user,1,1,1,1
-access_mfbot_pnl_user,mfbot.pnl.user,model_mfbot_pnl,group_mfbot_user,1,1,1,1
-access_mfbot_fill_user,mfbot.fill.user,model_mfbot_fill,group_mfbot_user,1,1,1,1
+access_strategy_trader_user,strategy.trader.user,model_strategy_trader,group_strategy_user,1,1,1,1
+access_strategy_strategy_user,strategy.strategy.user,model_strategy_strategy,group_strategy_user,1,1,1,1
+access_strategy_market_user,strategy.market.user,model_strategy_market,group_strategy_user,1,1,1,1
+access_strategy_exchange_user,strategy.exchange.user,model_strategy_exchange,group_strategy_user,1,1,1,1
+access_strategy_fill_user,strategy.fill.user,model_strategy_fill,group_strategy_user,1,1,1,1

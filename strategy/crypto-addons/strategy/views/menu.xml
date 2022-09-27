@@ -1,31 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
   <menuitem id="crypto_root_menu"
-            name="加密货币"
+            name="Cryptocurrency"
             />
 
   <menuitem id="strategy_root_menu"
-            name="策略"
+            name="Strategy"
             parent="crypto_root_menu"
             action="strategy_action"
             sequence="0"/>
 
-  <!-- <menuitem id="pnl_root_menu" -->
-  <!--           name="盈亏" -->
-  <!--           parent="crypto_root_menu" -->
-  <!--           action="pnl_action" -->
-  <!--           sequence="1"/> -->
-
+  <menuitem id="trader_root_menu"
+            name="Trader"
+            parent="crypto_root_menu"
+            action="trader_action"
+            sequence="1"/>
+  
   <menuitem id="fill_root_menu"
-            name="成交"
+            name="Fill"
             parent="crypto_root_menu"
             action="fill_action"
             sequence="2"/>
 
-  <menuitem id="kline_root_menu"
-            name="数据"
+  <menuitem id="exchange_root_menu"
+            name="Exchange"
             parent="crypto_root_menu"
-            action="kline_action"
+            action="exchange_action"
             sequence="3"/>
+
+  <menuitem id="market_root_menu"
+            name="Market"
+            parent="crypto_root_menu"
+            action="market_action"
+            sequence="4"/>
 
 </odoo>
