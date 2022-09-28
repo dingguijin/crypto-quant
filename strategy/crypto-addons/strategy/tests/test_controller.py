@@ -23,3 +23,4 @@ class TestControllerCase(TransactionCase):
         res = requests.post("http://localhost:8069/cryptocurrency/get_trader", json=data)
         print(res.text)
         return
+

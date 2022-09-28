@@ -8,51 +8,17 @@ from trade_type import TradeType
 
 from strategy import Strategy
 
-class GridStrategy(Strategy):
-    def __init__(self, grid_exchange, market, size, open_price, grid_gap_ratio, strategy_id):
+class VegasStrategy(Strategy):
+    def __init__(self):
         self.market = market
         self.size = size
+        return
+
+    def strategy_loop_once(self):        
+        return
         
-        self.grid_exchange = grid_exchange
-        self.open_price = open_price
-        self.grid_gap_ratio = grid_gap_ratio
-        self.base_grid_gap_ratio = grid_gap_ratio
-
-        self.placed_orders = []
-        self.position_sizes = []
-
-        self.sleep_seconds = 0
-        self.grid_step_ratio_sleep = 0
-
-        self.update_odoo_pnl_sleep = 0
-        self.update_odoo_pnl_time = datetime.datetime.now()
-
-        self.strategy_id = strategy_id
-        return
-
     def open_initial_position(self):
-        self.place_grid_buy_order(self.open_price*(1-self.grid_gap_ratio))
-        self.place_grid_sell_order(self.open_price*(1+self.grid_gap_ratio))
         return
-
-    def get_next_sell_price(self, position_price):
-        # FIXME: not round here
-        return position_price*(1+self.grid_gap_ratio)
-
-    def get_next_buy_price(self, position_price):
-        # FIXME: not round here
-        return position_price*(1-self.grid_gap_ratio)
-
-    def place_grid_sell_order(self, price, order_type=TradeType.LIMIT):
-        trade_side = self.grid_exchange.convert_side_for_exchange(TradeSide.SELL)
-        placed_order = None
-        if order_type == TradeType.LIMIT:
-            placed_order = self.grid_exchange.place_limit_order(self.market, self.size, trade_side, price)
-        if order_type == TradeType.MARKET:
-            placed_order = self.grid_exchange.place_market_order(self.market, self.size, trade_side, price)
-        if placed_order != None:
-            self.placed_orders.append(placed_order)
-        return placed_order
 
     def place_grid_buy_order(self, price, order_type=TradeType.LIMIT):
         trade_side = self.grid_exchange.convert_side_for_exchange(TradeSide.BUY)

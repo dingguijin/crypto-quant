@@ -7,8 +7,6 @@ import itertools
 import logging
 
 from enum import Enum
-from dotenv import load_dotenv
-load_dotenv()
 
 import pprint
 
@@ -27,21 +25,17 @@ class FtxTradeType(Enum):
 
 class FtxExchange():
 
-    def __init__(self, account_name=None, subaccount_name=None):
-        self.account_name = account_name
-        self.subaccount_name = subaccount_name
-        self.client = self._init_client()
+    def __init__(self):
         return
 
-    def _init_client(self):
-        _ftx_api_key = "FTX_API_KEY"
-        _ftx_api_serect = "FTX_API_SECRET"
-        if self.account_name:
-            _ftx_api_key = self.account_name + "_" + _ftx_api_key
-            _ftx_api_serect = self.account_name + "_" + _ftx_api_serect
-        _key = os.getenv(_ftx_api_key)
-        _secret = os.getenv(_ftx_api_serect)
-        return FtxClient(api_key=_key, api_secret=_secret, subaccount_name=self.subaccount_name)
+    def init_with_exchange_data(self, exchange_data):
+        subaccount_name = exchange_data.get("subaccount_name")
+        api_key = exchange_data.get("api_key")
+        api_secret = exchange_data.get("api_secret")
+        self.client = FtxClient(api_key=api_key,
+                                api_secret=api_secret,
+                                subaccount_name=subaccount_name)
+        return
 
     def place_conditional_order(self, market, side, size, type="stop",
                                 limit_price=None, reduce_only=False,

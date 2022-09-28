@@ -7,8 +7,6 @@ import itertools
 import logging
 
 from enum import Enum
-from dotenv import load_dotenv
-load_dotenv()
 
 from dydx3 import Client
 from dydx3 import constants
@@ -23,28 +21,40 @@ ETH_DYDX = constants.MARKET_ETH_USD
 BTC_DYDX = constants.MARKET_BTC_USD
 
 class DydxExchange():
-    def __init__(self, account_name):
-        self.account_name = account_name
+    def __init__(self):
+        return
 
+    def init_with_exchange_data(self, exchange_data):
         self.expiration_seconds = 24 * 3600
         self.limit_fee = 0.001
+        
+        # _private_key = os.getenv("%s_DYDX_ETH_PRIVATE_KEY" % self.account_name)
+        # _api_key = os.getenv("%s_DYDX_API_KEY" % self.account_name)
+        # _api_secret = os.getenv("%s_DYDX_API_SECRET" % self.account_name)
+        # _api_passphrase = os.getenv("%s_DYDX_API_PASSPHRASE" % self.account_name)
+        # _stark_private_key = os.getenv("%s_DYDX_STARK_PRIVATE_KEY" % self.account_name)
 
-        self.client = self._init_client()
+        _default_ethereum_address = exchange_data.get("default_ethereum_address")
+        _eth_private_key = exchange_data.get("private_key")
+        _stark_private_key = exchange_data.get("stark_private_key")
+        _api_key = exchange_data.get("api_key")
+        _api_secret = exchange_data.get("api_secret")
+        _api_passphrase = exchange_data.get("api_passphrase")
+        
+        self.client = Client(host="https://api.dydx.exchange",
+                             eth_private_key=_private_key,
+                             stark_private_key=_stark_private_key,
+                             default_ethereum_address=_default_ethereum_address,
+                             api_key_credentials={
+                                 "key": _api_key,
+                                 "secret": _api_secret,
+                                 "passphrase": _api_passphrase
+                            })
 
         # FIXME: must be call after init client
         self.position_id = self._get_position_id()
         assert(self.position_id)
-        return
 
-    def _init_client(self):
-        
-        _private_key = os.getenv("%s_DYDX_ETH_PRIVATE_KEY" % self.account_name)
-        _api_key = os.getenv("%s_DYDX_API_KEY" % self.account_name)
-        _api_secret = os.getenv("%s_DYDX_API_SECRET" % self.account_name)
-        _api_passphrase = os.getenv("%s_DYDX_API_PASSPHRASE" % self.account_name)
-        _stark_private_key = os.getenv("%s_DYDX_STARK_PRIVATE_KEY" % self.account_name)
-    
-        return Client(host="https://api.dydx.exchange",eth_private_key=_private_key,stark_private_key=_stark_private_key, default_ethereum_address="0x211164B771F7910445E96914E7a4D66a406458d2", api_key_credentials={"key": _api_key, "secret": _api_secret, "passphrase": _api_passphrase})
 
     def _get_position_id(self):
         account_response = self.client.private.get_account().data

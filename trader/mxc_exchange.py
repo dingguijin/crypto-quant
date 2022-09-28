@@ -8,8 +8,6 @@ import itertools
 import random
 
 from enum import Enum
-from dotenv import load_dotenv
-load_dotenv()
 
 import pprint
 
@@ -33,20 +31,14 @@ class MxcTradeType(Enum):
 
 class MxcExchange():
 
-    def __init__(self, market=MxcMarket.APN.value, size=0.001):
-        self.market = market
-        self.size = size
-        self.client = self._init_client()
+    def __init__(self):
         return
 
-    def _init_client(self):
-        _key = os.getenv("WWP_MXC_API_KEY")
-        _secret = os.getenv("WWP_MXC_API_SECRET")
-
-        #_key = os.getenv("MXC_API_KEY")
-        #_secret = os.getenv("MXC_API_SECRET")
-
-        return MxcClient(api_key=_key, api_secret=_secret)
+    def init_with_exchange_data(self, exchange_data):
+        _key = exchange_data.get("api_key")
+        _secret = exchange_data.get("api_secret")
+        self.client = MxcClient(api_key=_key, api_secret=_secret)
+        return 
 
     def place_market_order(self, side, price):
         return self.place_order(side, price, MxcTradeType.MARKET)
