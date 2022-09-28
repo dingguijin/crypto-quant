@@ -17,9 +17,9 @@ class Trader(models.Model):
     _rec_name = "id"
 
     strategy_id = fields.Many2one('strategy.strategy', string='Strategy')
-    exchange_id = fields.Many2one(trade.exchange, string='Exchange', required=True, help='Select a exchange')
+    exchange_id = fields.Many2one('strategy.exchange', string='Exchange', required=True, help='Select a exchange')
 
-    market_id = fields.Many2one(trade.market, string='Market', required=True, help='Select a coin')
+    market_id = fields.Many2one('strategy.market', string='Market', required=True, help='Select a coin')
 
     invest = fields.Float('invest', track_visibility='onchange')
     
@@ -28,13 +28,17 @@ class Trader(models.Model):
     position = fields.Float('Position', readonly=True)
     
     user_id = fields.Many2one('res.users', string='User')
-    subaccount = fields.Char('Exchage subaccount')
 
-    fill_lines = fields.One2many('trade.fill', 'trader_id', string='Fill lines')
+    subaccount = fields.Char(related_to="exchange_id.subaccount", string='Exchage subaccount')
+    fill_lines = fields.One2many('strategy.fill', 'trader_id', string='Fill lines')
 
     misc = fields.Text('Misc')
 
-    start_date = fields.Datetime('Start Time', track_visibility='onchange')
+    start_time = fields.Datetime('Start Time', track_visibility='onchange')
+    stop_time = fields.Datetime('Stop Time', track_visibility='onchange')
+    sleep_interval = fields.Float('Sleep Interval', default=5.0)
+    
+    trader_pid = fields.Integer('Trader Pid')
 
     able_to_modify = fields.Boolean(string='Able to modify', compute='_compute_able_to_modify')
     

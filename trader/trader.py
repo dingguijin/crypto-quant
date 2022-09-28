@@ -21,7 +21,10 @@ class Trader():
     def __init__(self, odoo_client):
         self.odoo_client = odoo_client
         self.trader_data = None
+        self.market_data = None
+
         self.exchange = None
+        self.strategy = None
         return
 
     def get_exchange(self, name):
@@ -45,26 +48,35 @@ class Trader():
         exchange_data = trader_data.get("exchange")
         if not exchange_data:
             return None
-        exchange = self.get_exchange(exchange_data.get("name"))
+        exchange = self.get_exchange(exchange_data.get("symbol"))
         if not exchange:
             return None
         exchange.init_with_exchange_data(exchange_data)
         return exchange
 
+    def init_market(self, trader_data):
+        market_data = trader_data.get("market")
+        if not market_data:
+            return None
+        return market_data
+
+    def init_strategy(self, trader_data):
+        strategy_data = trader_data.get("strategy")
+        if not strategy_data:
+            return None
+        strategy = self.get_strategy(strategy_data.get("symbol"))
+        strategy.init_with_exchange_data(strategy_data)
+        return strategy
+     
     def loop(self):
+        assert(self.strategy)
+        assert(self.exchange)
         while True:
-            time.sleep(1)
             logging.info("In trader loop")
+            self.strategy.strategy_loop_once()
+            self.strategy.sleep()
         return
 
-    # def init_market(self, trader_data):
-    #     market_data = trader_data.get("market")
-    #     if not market_data:
-    #         return None
-    #     market = get_market(market_data)
-    #     if not market:
-    #         return None
-    #     return market
 
         
 

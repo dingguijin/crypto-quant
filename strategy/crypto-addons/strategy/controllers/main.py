@@ -45,7 +45,7 @@ class MainController(Controller):
         return {}
 
     @route('/cryptocurrency/get_trader', type='json', methods=['POST'], auth='none', cors='*')
-    def update_pnl(self, **kwargs):
+    def get_trader(self, **kwargs):
         data = json.loads(request.httprequest.data)
         logging.info("data %s" % data)
         trader_id = data.get("trader_id")
@@ -60,6 +60,7 @@ class MainController(Controller):
             return {}
 
         now = datetime.datetime.now()
-        trader.write({"last_run_time": now})
+        trader.write({"last_start_time": now, "trader_pid": data.get("trader_pid")})
         _logger.info(dict(trader[0]))
         return dict(trader[0])
+

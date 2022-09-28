@@ -9,32 +9,21 @@ from trade_type import TradeType
 from singleton import Singleton
 
 class Strategy(metaclass=Singleton):
-    def __init__(trader):
+    def __init__(self, trader):
         self.trader = trader
-        self.sleep_interval = trader.sleep_interval
+        self.sleep_interval = trader.trader_data.get("sleep_interval")
+        self.market = self.trader.market_data.get("symbol")
+
         self.sleep_seconds = 0
+        self.strategy_data = None
         return
 
+    def init_with_strategy_data(self, strategy_data):
+        self.strategy_data = strategy_data
+        return
+        
     def strategy_loop_once(self):        
-        return
-
-    def get_market_fills(self):
-        return
-        
-    def get_market_position(self):
-        return
-
-    def get_market_orders(self):
-        return
-        
-    def get_account_balance(self):
-        return
-        
-    def get_placed_orders(self):
-        return
-        
-    def get_cancelled_orders(self):
-        return
+        raise NotImplementedError
             
     def sleep(self):
         time.sleep(self.sleep_interval)

@@ -19,6 +19,10 @@ class Exchange(models.Model):
     symbol = fields.Char(string='Symbol', required=True)
     name = fields.Char(string='Name', required=True)
 
+    api_key = fields.Char(string='Api Key', required=True)
+    api_secret = fields.Char(string='Api Secret', required=True)
+    subaccount = fields.Char(string='Sub Account')
+    
     maker_fee = fields.float(string='Maker fee')
     taker_fee = fields.float(string='Taker fee')
     

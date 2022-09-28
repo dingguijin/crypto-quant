@@ -9,38 +9,41 @@ from trade_type import TradeType
 from strategy import Strategy
 
 class GridStrategy(Strategy):
-    def __init__(self, grid_exchange, market, size, open_price, grid_gap_ratio, strategy_id):
-        self.market = market
-        self.size = size
-        
-        self.grid_exchange = grid_exchange
-        self.open_price = open_price
-        self.grid_gap_ratio = grid_gap_ratio
-        self.base_grid_gap_ratio = grid_gap_ratio
+    def init_with_strategy_data(self, strategy_data):
+        super().init_with_strategy_data(strategy_data)
+                
+        self.grid_exchange = self.trader.exchange
+
+        self.grid_gap = self.strategy_data.get("grid_gap")
+        self.base_grid_gap = self.strategy_data.get("grid_gap")        
+        self.grid_size = self.strategy_data.get("grid_size")
 
         self.placed_orders = []
         self.position_sizes = []
-
-        self.sleep_seconds = 0
-        self.grid_step_ratio_sleep = 0
-
-        self.update_odoo_pnl_sleep = 0
-        self.update_odoo_pnl_time = datetime.datetime.now()
-
-        self.strategy_id = strategy_id
         return
 
-    def open_initial_position(self):
-        self.place_grid_buy_order(self.open_price*(1-self.grid_gap_ratio))
-        self.place_grid_sell_order(self.open_price*(1+self.grid_gap_ratio))
+    def strategy_loop_once(self):
+        """ Isolate "get placed orders" and "get fills" logic
+        
+        get placed orders == 2, 1, 0:
+        if 0 get current price, place two orders
+        if 1 cancel all orders
+        if 2 get current price, legal continue, illegal cancel all orders
+        append placed orders id placed_orders array
+
+        get fills always 4:
+        if fills is None, continue
+        if fills not None and:
+        if fills in in placed_orders, remove all orders before fills in placed_orders, log into db
+        if fills not in placed_orders, continue
+        """
+        
         return
 
     def get_next_sell_price(self, position_price):
-        # FIXME: not round here
         return position_price*(1+self.grid_gap_ratio)
 
     def get_next_buy_price(self, position_price):
-        # FIXME: not round here
         return position_price*(1-self.grid_gap_ratio)
 
     def place_grid_sell_order(self, price, order_type=TradeType.LIMIT):

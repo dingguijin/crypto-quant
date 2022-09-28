@@ -11,13 +11,15 @@ import os
 import logging
 import unittest
 from unittest import mock
+from dotenv import load_dotenv
 
 from odoo_client import OdooClient
 from trader import Trader
 from exchange import Exchange
 from ftx_exchange import FtxExchange
 from dydx_exchange import DydxExchange
-from dotenv import load_dotenv
+
+from 
 
 class TddTrader(unittest.IsolatedAsyncioTestCase):
 
@@ -34,6 +36,7 @@ class TddTrader(unittest.IsolatedAsyncioTestCase):
         odoo_client = mock_OdooClient.return_value
         odoo_client.get_trader.return_value = {"exchange": {
             "name": "FTX",
+            "symbol": "FTX",
             "api_key": os.getenv("FTX_API_KEY"),
             "api_secret": os.getenv("FTX_API_SECRET"),
             "subaccount": "GDJ-01",
@@ -42,6 +45,7 @@ class TddTrader(unittest.IsolatedAsyncioTestCase):
             "symbol": "ETH-PERP"
         }, "strategy": {
             "name": "GRID",
+            "symbol": "GRID",
             "grid_gap": 0.0001,
             "grid_size": 0.0001
         }}
@@ -54,6 +58,9 @@ class TddTrader(unittest.IsolatedAsyncioTestCase):
 
         exchange = instance.init_exchange(trader_data)
         self.assertIsInstance(exchange, FtxExchange)
+
+        strategy = instance.init_strategy(trader_data)
+        self.assertIsInstance(strategy, GridStrategy)
 
         #price = exchange.get_last_trade("ETH-PERP")
         #account = exchange.client.get_account_info()
