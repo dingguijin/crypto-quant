@@ -32,12 +32,20 @@ class FtxClient:
     def _request(self, method: str, path: str, **kwargs) -> Any:
         http_proxy = os.getenv("http_proxy")
         https_proxy = os.getenv("https_proxy")
+        all_proxy = os.getenv("all_proxy")
         proxies = {}
         if http_proxy and https_proxy:
-            proxies = {
+            proxies.update({
                 "http": http_proxy,
                 "https": https_proxy
-            }
+            })
+
+        # if all_proxy:
+        #     proxies.update({
+        #         "http": all_proxy,
+        #         "https": all_proxy
+        #     })
+
         request = Request(method, self._ENDPOINT + path, **kwargs)
         self._sign_request(request)
         # add timeout to catch timeout

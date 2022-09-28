@@ -13,7 +13,7 @@ import pprint
 from ftx_client import FtxClient
 from trade_side import TradeSide
 from trade_type import TradeType
-
+from exchange import Exchange
 
 class FtxTradeSide(Enum):
     BUY = "buy"
@@ -23,10 +23,7 @@ class FtxTradeType(Enum):
     MARKET = "market"
     LIMIT = "limit"
 
-class FtxExchange():
-
-    def __init__(self):
-        return
+class FtxExchange(Exchange):
 
     def init_with_exchange_data(self, exchange_data):
         subaccount_name = exchange_data.get("subaccount_name")
@@ -89,8 +86,10 @@ class FtxExchange():
         return
 
     def get_last_trade(self, market):
-        future = self.client.get_market(market)
-        return {"price": float(future.get("last"))}
+        market = self.client.get_market(market)
+        if not market:
+            return None
+        return {"price": float(market.get("last"))}
 
     def get_fills(self, market, limit=4):
         fills = self.client.get_fills(market)
@@ -152,45 +151,3 @@ class FtxExchange():
             return FtxTradeSide.BUY
         return None
 
-
-if __name__ == "__main__":
-    import os
-    import sys
-    import logging
-
-    _root_dir = os.path.join(os.path.dirname(__file__), "../../")
-    sys.path.append(os.path.abspath(_root_dir))
-
-    logging.basicConfig(
-        format='%(asctime)s %(levelname)-8s %(message)s',
-        level=logging.INFO,
-        datefmt='%Y-%m-%d %H:%M:%S')
-    
-    exchange = FtxExchange(subaccount_name="WWP-01")
-    pprint.pprint(exchange.client.get_account_info())
-    pprint.pprint(exchange.client.get_account_info().get("openMarginFraction"))
-
-    pprint.pprint(exchange.get_open_positions())
-    pprint.pprint(exchange.get_open_positions()[0].get("recentPnl"))
-    pprint.pprint(exchange.get_open_positions()[0].get("unrealizedPnl"))
-    pprint.pprint(exchange.get_open_positions()[0].get("realizedPnl"))
-    
-    exchange = FtxExchange(subaccount_name="DGJ-01")
-    pprint.pprint(exchange.client.get_account_info())
-    pprint.pprint(exchange.client.get_account_info().get("openMarginFraction"))
-
-    pprint.pprint(exchange.get_open_positions())
-    pprint.pprint(exchange.get_open_positions()[0].get("recentPnl"))
-    pprint.pprint(exchange.get_open_positions()[0].get("unrealizedPnl"))
-    pprint.pprint(exchange.get_open_positions()[0].get("realizedPnl"))    
-
-
-    pprint.pprint("=============================")
-    exchange = FtxExchange()
-    pprint.pprint(exchange.client.get_account_info())
-    pprint.pprint(exchange.client.get_account_info().get("openMarginFraction"))
-
-    pprint.pprint(exchange.get_open_positions())
-    pprint.pprint(exchange.get_open_positions()[0].get("recentPnl"))
-    pprint.pprint(exchange.get_open_positions()[0].get("unrealizedPnl"))
-    pprint.pprint(exchange.get_open_positions()[0].get("realizedPnl"))    

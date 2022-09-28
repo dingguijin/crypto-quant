@@ -20,7 +20,7 @@ class TddOdooClient(unittest.IsolatedAsyncioTestCase):
         return
 
     def test_odoo_client_object(self):
-        instance = OdooClient.get_instance()
+        instance = OdooClient(host="localhost", port=8069)
         self.assertIsInstance(instance, OdooClient)
         return
 

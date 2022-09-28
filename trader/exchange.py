@@ -7,21 +7,12 @@
 # trader/exchange.py
 #
 
-from ftx_exchange import FtxExchange
-from dydx_exchange import DydxExchange
-from mxc_exchange import MxcExchange
-
 import logging
+class Exchange():
 
-def get_exchange(name):    
-    if name == "mxc":
-        return MxcGridExchange()
-
-    if name == "dydx":
-        return DydxExchange()
-
-    if name == "ftx":
-        return FtxExchange()
-
-    logging.error("No exchange match %s" % name)
-    return None
+    def __init__(self, trader):
+        self.trader = trader
+        return
+        
+    def init_with_exchange_data(self, exchage_data):
+        return
