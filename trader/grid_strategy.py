@@ -37,7 +37,24 @@ class GridStrategy(Strategy):
         if fills in in placed_orders, remove all orders before fills in placed_orders, log into db
         if fills not in placed_orders, continue
         """
-        
+        placed_orders = self.get_placed_orders() or []
+        if len(placed_orders) == 0:
+            # reset placed_orders here
+            self.placed_orders = []
+            current_price = self.get_current_price()
+            sell_price = self.get_next_sell_price(current_price)
+            buy_price = self.get_next_buy_price(current_price)
+            self.place_grid_buy_order(buy_price)
+            self.place_grid_sell_order(sell_price)
+        elif len(placed_orders) == 1:
+            self.cancel_orders(placed_orders)
+        elif len(placed_orders) == 2:
+            if not self.is_valid_grid_orders(placed_orders):
+                self.cancel_orders(placed_orders)
+        else:
+            self.cancel_orders(placed_orders)
+
+        filled_orders = self.get_filled_orders() or []        
         return
 
     def get_next_sell_price(self, position_price):
