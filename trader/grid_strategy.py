@@ -31,10 +31,10 @@ class GridStrategy(Strategy):
         if 2 get current price, legal continue, illegal cancel all orders
         append placed orders id placed_orders array
 
-        get fills always 4:
+        get fills always set max 4:
         if fills is None, continue
         if fills not None and:
-        if fills in in placed_orders, remove all orders before fills in placed_orders, log into db
+        if fills in in placed_orders, remove in placed_orders, log into db
         if fills not in placed_orders, continue
         """
         placed_orders = self.get_placed_orders() or []
@@ -54,7 +54,13 @@ class GridStrategy(Strategy):
         else:
             self.cancel_orders(placed_orders)
 
-        filled_orders = self.get_filled_orders() or []        
+        filled_orders = self.get_filled_orders() or []
+        if not filled_orders:
+            pass
+        else:
+            _filled = set(filled_orders).intersection(set(placed_orders))
+            for _one in _filled:                
+                self.create_odoo_fill(_one)
         return
 
     def get_next_sell_price(self, position_price):
@@ -92,33 +98,6 @@ class GridStrategy(Strategy):
         filled_orders = list(filter(lambda x: x.get("order_id") in order_ids, self.placed_orders))
         unfilled_orders = list(filter(lambda x: x.get("order_id") not in order_ids, self.placed_orders))
         return filled_orders, unfilled_orders
-    
-    def on_fills_update(self, fills):
-        _filled_orders, _unfilled_orders = self._find_lastest_fill_orders(fills)
-        if not _filled_orders:
-            return None
-        
-        logging.info("filled_orders %s" % _filled_orders)
-
-        cancel_ids = list(map(lambda x: x.get("order_id"), _unfilled_orders))
-        if cancel_ids:
-            self.cancel_unfilled_orders(cancel_ids)
-
-        self.create_odoo_fill(_filled_orders[0])
-        
-        # use latest order price, but not the grid price
-        # so that we can set very small step 
-        # _last_price = self.grid_exchange.get_last_price(self.market)
-        # _last_price = _last_price.get("price")
-
-        # logging.info("get last price: %s" % _last_price)
-        _last_price = _filled_orders[0].get("price")
-        # reinit placed orders
-
-        self.placed_orders = []
-        self.replace_grid_orders(_last_price)
-
-        return self.placed_orders
 
     def cancel_unfilled_orders(self, cancel_ids):
         if not cancel_ids:
@@ -176,67 +155,6 @@ class GridStrategy(Strategy):
         # reinit
         self.placed_orders = []
         self.replace_grid_orders(last_trade.get("price"))
-        return
-    
-    def caculate_grid_step_ratio(self):
-        if True:
-            self.grid_gap_ratio = self.base_grid_gap_ratio
-            return
-
-        # comments other code
-        if self.grid_step_ratio_sleep < 60.0:
-            return
-        self.grid_step_ratio_sleep = 0
-
-        positions = self.grid_exchange.get_open_positions(self.market)
-        if not positions:
-            return
-
-        logging.info("positions ... %s" % positions)
-        positions = list(filter(lambda x: x.get("size") > 0.0, positions))
-        if not positions:
-            return
-
-        position = positions[0]
-        logging.info("position ... %s" % position)
-        # if position.get("pnl") > 0.0:
-        #     return
-
-        account_balance = self.grid_exchange.get_account_balance()
-        if not account_balance:
-            logging.info("no account balance")
-            return
-
-        total_value = account_balance.get("total_value")
-        total_position = account_balance.get("total_position")
-
-        logging.info("account balance: %s" % account_balance)
-        
-        # less than 80%
-        if total_value * 0.80 >= total_position:
-            self.grid_gap_ratio = self.base_grid_gap_ratio
-            logging.info("grid gap ratio 1x %s" % self.grid_gap_ratio)
-            return
-
-        # between 80% - 100%
-        if total_value * 0.80 < total_position and total_value >= total_position:
-            self.grid_gap_ratio = 1.5*self.base_grid_gap_ratio
-            logging.info("grid gap ratio 2x %s" % self.grid_gap_ratio)
-            return
-
-        # between 100% - 200%
-        if total_value < total_position and total_value*2.0 >= total_position:
-            self.grid_gap_ratio = 2.0*self.base_grid_gap_ratio
-            logging.info("grid gap ratio 4x %s" % self.grid_gap_ratio)
-            return
-
-        # larger than 200%
-        if total_value*2.0 < total_position:
-            self.grid_gap_ratio = 3.0*self.base_grid_gap_ratio
-            logging.info("grid gap ratio 8x %s" % self.grid_gap_ratio)
-            return
-
-        logging.info("keep grid gap ratio ?x %s" % self.grid_gap_ratio)
         return
 
     def create_odoo_fill(self, fill):
